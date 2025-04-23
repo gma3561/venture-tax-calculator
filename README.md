@@ -8,6 +8,21 @@
 - **세율 구간 분석**: 소득공제 전후의 세율 구간 변화와 한계세율 효과를 확인할 수 있습니다.
 - **투자 수익성 분석**: 현금 리턴과 세금 절감을 통한 최종 수익률을 분석합니다.
 
+## 프로젝트 구조
+
+```
+venture-tax-calculator/
+├── src/                # 소스 코드 폴더
+│   └── venture_caculator.py  # 메인 애플리케이션 코드
+├── data/               # 데이터 파일 저장 폴더
+├── tests/              # 테스트 코드 폴더
+├── docs/               # 문서 파일 폴더
+├── .streamlit/         # Streamlit 설정 폴더
+│   └── config.toml     # Streamlit 테마 설정
+├── README.md           # 프로젝트 설명 문서
+└── requirements.txt    # 의존성 패키지 목록
+```
+
 ## 사용 방법
 
 1. 사이드바에서 총급여액, 소득공제 항목 등 정보를 입력하세요.
@@ -18,10 +33,10 @@
 
 ```bash
 # 패키지 설치
-pip install streamlit
+pip install -r requirements.txt
 
-# 앱 실행
-streamlit run venture_caculator.py
+# 앱 실행 (루트 디렉토리에서)
+streamlit run src/venture_caculator.py
 ```
 
 ## 벤처투자 소득공제율
