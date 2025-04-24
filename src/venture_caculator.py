@@ -63,20 +63,21 @@ st.markdown("""
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     
-    /* 모바일 최적화 */
+    /* 반응형 설정 - 모바일 최적화 */
     @media (max-width: 768px) {
         .main-header {
-            font-size: 1.3rem !important;
-            margin-top: 0.8rem !important;
-            padding: 0 0.5rem !important;
+            font-size: 1.2rem !important;
+            margin-top: 0.5rem !important;
+            padding: 0 0.3rem !important;
         }
         
         /* 테이블 스크롤 처리 */
         .scrollable-table-container {
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
-            margin: 0 -1rem !important;
-            padding: 0 1rem !important;
+            margin: 0 -0.5rem !important;
+            padding: 0 0.5rem !important;
+            max-width: 100vw !important;
         }
         
         /* 테이블 셀 최적화 */
@@ -84,78 +85,135 @@ st.markdown("""
         .comparison-table th,
         .deduction-analysis-table td,
         .deduction-analysis-table th {
-            padding: 0.7rem 0.5rem !important;
-            font-size: 0.85rem !important;
+            padding: 0.5rem 0.3rem !important;
+            font-size: 0.75rem !important;
             white-space: nowrap !important;
         }
         
         /* 숫자 표시 최적화 */
         .highlight-number {
-            font-size: 0.85rem !important;
-            padding: 2px 6px !important;
+            font-size: 0.75rem !important;
+            padding: 2px 4px !important;
         }
         
         /* 결과 박스 최적화 */
         .result-box {
-            padding: 1rem 0.8rem !important;
-            margin: 0.5rem 0 !important;
+            padding: 0.8rem 0.6rem !important;
+            margin: 0.4rem 0 !important;
         }
         
         /* 금액 표시 최적화 */
         .result-box p[style*="font-size:1.7rem"] {
-            font-size: 1.3rem !important;
+            font-size: 1.1rem !important;
         }
         
         /* 설명 텍스트 최적화 */
         .result-box p[style*="font-size:0.8rem"] {
-            font-size: 0.75rem !important;
+            font-size: 0.7rem !important;
         }
         
         /* 탭 내용 최적화 */
         [data-testid="stTabs"] {
-            margin: 0 -1rem !important;
+            margin: 0 -0.5rem !important;
         }
         
         [data-testid="stTabContent"] {
-            padding: 0 0.5rem !important;
+            padding: 0 0.3rem !important;
         }
 
         /* 투자 효율성 평가 섹션 모바일 최적화 */
         .highlight-box div {
             text-align: center !important;
-            padding: 0.8rem !important;
+            padding: 0.6rem !important;
         }
 
         .highlight-box div[style*="margin-bottom:2rem"] {
             background-color: var(--background-light) !important;
-            border-radius: 8px !important;
-            margin: 0.8rem auto !important;
-            max-width: 90% !important;
-            padding: 1rem !important;
+            border-radius: 6px !important;
+            margin: 0.6rem auto !important;
+            max-width: 98% !important;
+            padding: 0.8rem !important;
         }
 
         /* 금액 표시 스타일 */
         .highlight-box div[style*="color:var(--text-primary)"] {
-            font-size: 1.3rem !important;
-            margin: 0.5rem 0 !important;
+            font-size: 1.1rem !important;
+            margin: 0.3rem 0 !important;
         }
 
         /* 설명 텍스트 스타일 */
         .highlight-box div[style*="color:var(--text-secondary)"] {
-            font-size: 0.9rem !important;
-            margin: 0.3rem 0 !important;
+            font-size: 0.8rem !important;
+            margin: 0.2rem 0 !important;
         }
 
         /* 섹션 제목 스타일 */
         .highlight-box h3[style*="font-weight:700"] {
-            font-size: 1.2rem !important;
-            margin: 1rem 0 1.5rem 0 !important;
+            font-size: 1.1rem !important;
+            margin: 0.8rem 0 1rem 0 !important;
         }
 
         /* 결과값 강조 스타일 */
         .highlight-box div[style*="color:var(--positive)"] {
-            font-size: 1.4rem !important;
-            margin: 0.5rem 0 !important;
+            font-size: 1.2rem !important;
+            margin: 0.3rem 0 !important;
+        }
+        
+        /* 사이드바 최적화 */
+        .st-emotion-cache-1cypcdb {
+            padding: 1rem 0.8rem !important;
+        }
+        
+        /* 사이드바 헤더 */
+        .sidebar-header {
+            font-size: 1.1rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        /* 입력 그룹 */
+        .input-group {
+            padding: 0.8rem !important;
+            margin: 0.8rem 0 !important;
+        }
+        
+        /* 테이블 최적화 */
+        .comparison-table {
+            font-size: 0.75rem !important;
+            margin: 0.8rem 0 !important;
+        }
+        
+        /* 결과 서브헤더 */
+        .result-subheader {
+            font-size: 1rem !important;
+            padding: 0.6rem 0.8rem !important;
+            margin: 1rem 0 !important;
+        }
+        
+        /* 하이라이트 박스 */
+        .highlight-box {
+            padding: 1rem !important;
+            margin: 0.8rem 0 !important;
+        }
+    }
+    
+    /* 태블릿 최적화 */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .main-header {
+            font-size: 1.5rem !important;
+        }
+        
+        .result-box {
+            padding: 1.5rem !important;
+        }
+        
+        .comparison-table td, 
+        .comparison-table th {
+            padding: 0.8rem !important;
+            font-size: 0.95rem !important;
+        }
+        
+        .highlight-box {
+            padding: 1.2rem !important;
         }
     }
     
@@ -177,67 +235,37 @@ st.markdown("""
         text-align: center;
     }
     
-    /* 섹션 헤더 */
-    .section-header {
-        color: var(--text-primary);
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 2rem 0 1rem 0;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid var(--border);
-        background-color: var(--background);
+    /* 반응형 컬럼 레이아웃 */
+    .st-emotion-cache-ocqkz7 {
+        flex-wrap: wrap !important;
     }
     
-    /* 서브 헤더 */
-    .result-subheader {
-        color: var(--primary-dark);
-        font-size: 1.3rem;
-        font-weight: 700;
-        margin: 1.5rem 0;
-        padding: 0.8rem 1.2rem;
-        background-color: var(--primary-light);
-        border-radius: 8px;
+    .st-emotion-cache-ocqkz7 > div {
+        flex: 1 1 300px !important;
+        min-width: 250px !important;
+    }
+    
+    /* 모든 텍스트 입력 필드를 반응형으로 */
+    .st-emotion-cache-10oheav {
+        flex-wrap: wrap !important;
+    }
+    
+    .st-emotion-cache-10oheav > div {
+        flex-grow: 1 !important;
+        min-width: 200px !important;
+    }
+    
+    /* 테이블 컨테이너 */
+    .scrollable-table-container {
+        overflow-x: auto;
+        width: 100%;
         display: block;
-    }
-    
-    /* 결과 박스 */
-    .result-box {
-        background-color: var(--background);
-        padding: 2rem;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        margin: 1.8rem 0;
-        box-shadow: 0 6px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        transition: all 0.2s ease-in-out;
-    }
-    .result-box:hover {
-        box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.1), 0 8px 12px -4px rgba(0, 0, 0, 0.05);
-        transform: translateY(-3px);
-        border-color: var(--primary-light);
-    }
-    
-    /* 하이라이트 박스 */
-    .highlight-box {
-        background-color: var(--background) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 12px !important;
-        padding: 1.5rem !important;
-        margin: 1rem 0 !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
-    }
-    
-    .highlight-box div[style*="margin-bottom:2rem"] {
-        transition: all 0.2s ease-in-out !important;
-    }
-    
-    .highlight-box div[style*="margin-bottom:2rem"]:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
     }
     
     /* 비교 테이블 */
     .comparison-table {
         width: 100%;
+        min-width: 550px;
         border-collapse: separate;
         border-spacing: 0;
         margin: 1.5rem 0;
