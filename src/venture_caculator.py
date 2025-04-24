@@ -1300,6 +1300,120 @@ def calculate_and_show_results():
                 </p>
             </div>
             """, unsafe_allow_html=True)
+            
+            # 벤처투자 소득공제 전/후 환급액 비교 테이블 추가
+            st.markdown('<p class="result-subheader" style="margin-top:2rem;">💰 벤처투자 소득공제 전후 환급액 비교</p>', unsafe_allow_html=True)
+            
+            # 벤처투자 소득공제 전 세금 계산
+            tax_pre_raw = calc_tax(pre_venture_taxable)
+            if tax_pre_raw <= 1_300_000:
+                tax_credit_pre = int(tax_pre_raw * 0.55)
+            else:
+                tax_credit_pre = int(1_300_000 * 0.55 + (tax_pre_raw - 1_300_000) * 0.30)
+                
+            # 최대 공제한도 설정
+            if st.session_state.current_salary <= 33_000_000:
+                tax_credit_pre = min(tax_credit_pre, 740_000)
+            elif st.session_state.current_salary <= 70_000_000:
+                tax_credit_pre = min(tax_credit_pre, 740_000 - ((st.session_state.current_salary - 33_000_000) * 0.008))
+            else:
+                tax_credit_pre = min(tax_credit_pre, 660_000)
+                
+            tax_pre_after = max(0, tax_pre_raw - tax_credit_pre)
+            local_pre = int(tax_pre_after * 0.10)
+            total_tax_pre = tax_pre_after + local_pre
+            
+            # 벤처투자 소득공제 후 세금 계산
+            tax_post_raw = calc_tax(post_venture_taxable)
+            if tax_post_raw <= 1_300_000:
+                tax_credit_post = int(tax_post_raw * 0.55)
+            else:
+                tax_credit_post = int(1_300_000 * 0.55 + (tax_post_raw - 1_300_000) * 0.30)
+                
+            # 최대 공제한도 설정
+            if st.session_state.current_salary <= 33_000_000:
+                tax_credit_post = min(tax_credit_post, 740_000)
+            elif st.session_state.current_salary <= 70_000_000:
+                tax_credit_post = min(tax_credit_post, 740_000 - ((st.session_state.current_salary - 33_000_000) * 0.008))
+            else:
+                tax_credit_post = min(tax_credit_post, 660_000)
+                
+            tax_post_after = max(0, tax_post_raw - tax_credit_post)
+            local_post = int(tax_post_after * 0.10)
+            total_tax_post = tax_post_after + local_post
+            
+            # 환급액 차이
+            tax_diff = total_tax_pre - total_tax_post
+            
+            # 원천징수 세액 계산 (근사값)
+            # 실제 원천징수는 간이세액표를 기준으로 하지만, 여기서는 단순화된 계산식을 사용
+            def estimate_withholding_tax(annual_salary):
+                # 간이세액표 방식을 단순화한 계산
+                monthly_salary = annual_salary / 12
+                
+                # 근로소득 간이세액표를 단순화하여 구현
+                if monthly_salary <= 1_000_000:  # 월 100만원 이하
+                    monthly_tax = monthly_salary * 0.06
+                elif monthly_salary <= 3_000_000:  # 월 300만원 이하
+                    monthly_tax = monthly_salary * 0.08
+                elif monthly_salary <= 6_000_000:  # 월 600만원 이하
+                    monthly_tax = monthly_salary * 0.1
+                elif monthly_salary <= 10_000_000:  # 월 1000만원 이하
+                    monthly_tax = monthly_salary * 0.12
+                else:  # 월 1000만원 초과
+                    monthly_tax = monthly_salary * 0.15
+                
+                return int(monthly_tax * 12)  # 연간 원천징수 세액
+            
+            # 실제 원천징수 세액 계산
+            withholding_tax = estimate_withholding_tax(st.session_state.current_salary)
+            withholding_local_tax = int(withholding_tax * 0.1)  # 지방소득세 10%
+            total_withholding = withholding_tax + withholding_local_tax
+            
+            # 환급액 계산
+            refund_pre = max(0, total_withholding - total_tax_pre)  # 벤처투자 전 환급액
+            refund_post = max(0, total_withholding - total_tax_post)  # 벤처투자 후 환급액
+            additional_refund = refund_post - refund_pre  # 벤처투자로 인한 추가 환급액
+            
+            st.markdown(f"""
+            <div class="scrollable-table-container">
+            <table class="comparison-table">
+                <tr>
+                    <th>구분</th>
+                    <th>원천징수 세액</th>
+                    <th>확정 세액</th>
+                    <th>환급 세액</th>
+                </tr>
+                <tr>
+                    <td>벤처투자 소득공제 전</td>
+                    <td>{total_withholding:,}원</td>
+                    <td>{total_tax_pre:,}원</td>
+                    <td>{refund_pre:,}원</td>
+                </tr>
+                <tr>
+                    <td>벤처투자 소득공제 후</td>
+                    <td>{total_withholding:,}원</td>
+                    <td>{total_tax_post:,}원</td>
+                    <td>{refund_post:,}원</td>
+                </tr>
+                <tr>
+                    <td>차이</td>
+                    <td>0원</td>
+                    <td class="increase-number">-{tax_diff:,}원</td>
+                    <td class="increase-number">+{additional_refund:,}원</td>
+                </tr>
+            </table>
+            </div>
+            
+            <div class="highlight-box" style="margin-top:1rem;">
+                <p style="font-weight:600; margin-bottom:0.5rem; color:var(--primary-dark);">환급액 상세 분석</p>
+                <p style="color:var(--text-secondary); line-height:1.6; margin:0;">
+                    급여에서 원천징수되는 세금은 <strong>{total_withholding:,}원</strong>이며, 벤처투자 없이도 <strong>{refund_pre:,}원</strong>의 환급금을 받을 수 있습니다.
+                    벤처투자 소득공제 후에는 환급금이 <strong>{refund_post:,}원</strong>으로 증가하여, 
+                    <strong class="increase-number" style="padding:2px 6px;">{additional_refund:,}원</strong>의 추가 환급 혜택이 있습니다.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with tab2:
             # 소득공제 항목 시각화 - 카드 스타일로 변경
