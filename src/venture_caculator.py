@@ -63,8 +63,41 @@ st.markdown("""
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     
+    /* 기본 텍스트 조정 */
+    body, p, div, span, li, td, th {
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
+    }
+    
+    /* 반응형 테이블 셀 텍스트 */
+    table td, table th {
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 250px !important;
+    }
+    
+    /* 공간이 부족할 때 텍스트 생략 및 말줄임표(...) 표시 */
+    .truncate-text {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 100% !important;
+    }
+    
     /* 반응형 설정 - 모바일 최적화 */
     @media (max-width: 768px) {
+        /* 기본 텍스트 크기 조정 */
+        body, p, div, span, li {
+            font-size: 14px !important;
+        }
+        
+        /* 표 셀 텍스트 크기 조정 */
+        td, th {
+            font-size: 12px !important;
+            padding: 4px 6px !important;
+        }
+        
         .main-header {
             font-size: 1.2rem !important;
             margin-top: 0.5rem !important;
@@ -87,6 +120,18 @@ st.markdown("""
         .deduction-analysis-table th {
             padding: 0.5rem 0.3rem !important;
             font-size: 0.75rem !important;
+            white-space: normal !important; /* 줄바꿈 허용 */
+            min-width: auto !important;
+        }
+        
+        /* 첫번째 열은 텍스트 줄바꿈 허용 */
+        .comparison-table td:first-child {
+            white-space: normal !important;
+            min-width: 80px !important;
+        }
+        
+        /* 숫자 셀은 줄바꿈 없이 표시 */
+        .comparison-table td:not(:first-child) {
             white-space: nowrap !important;
         }
         
@@ -180,6 +225,9 @@ st.markdown("""
         .comparison-table {
             font-size: 0.75rem !important;
             margin: 0.8rem 0 !important;
+            width: 100% !important;
+            min-width: 100% !important;
+            table-layout: fixed !important;
         }
         
         /* 결과 서브헤더 */
@@ -187,12 +235,20 @@ st.markdown("""
             font-size: 1rem !important;
             padding: 0.6rem 0.8rem !important;
             margin: 1rem 0 !important;
+            word-wrap: break-word !important;
+            white-space: normal !important;
         }
         
         /* 하이라이트 박스 */
         .highlight-box {
             padding: 1rem !important;
             margin: 0.8rem 0 !important;
+        }
+        
+        /* 텍스트 내 줄바꿈을 허용 */
+        .highlight-box p {
+            white-space: normal !important;
+            word-wrap: break-word !important;
         }
     }
     
@@ -979,6 +1035,1830 @@ st.markdown("""
     .deduction-table th:nth-child(3) {
         text-align: right;
     }
+
+    /* 테이블 내용 정렬을 위한 추가 스타일 제거 */
+    .deduction-analysis-table tr {
+        display: table-row;
+    }
+    
+    .deduction-analysis-table th,
+    .deduction-analysis-table td {
+        display: table-cell;
+    }
+
+    /* 입력 스타일 개선 */
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--background);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container input {
+        flex: 1;
+        border: none !important;
+        padding: 1rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: right !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: var(--primary-dark) !important;
+    }
+    
+    .input-container button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border: none !important;
+        padding: 1rem 1.5rem !important;
+        font-weight: 600 !important;
+        min-width: 100px !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .input-container button:hover {
+        background-color: var(--primary-dark) !important;
+    }
+
+    /* 금액 단위 강조 */
+    .currency-unit {
+        font-weight: 600;
+        color: var(--primary);
+        padding-left: 0.5rem;
+    }
+
+    /* 계산 버튼 스타일 */
+    .calculate-button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 2rem !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .calculate-button:hover {
+        background-color: var(--primary-dark) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* 결과 섹션 스타일 */
+    .results-container {
+        background-color: var(--background-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 1px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .results-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid var(--primary);
+    }
+    
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .result-label {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+    }
+    
+    .result-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        text-align: right;
+    }
+    
+    .result-highlight {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    /* 계산 버튼 스타일 추가 - 버튼 클릭 이벤트 밖으로 이동 */
+    .stButton button[data-testid="stButtonPrimary"] {
+        height: 3.5rem !important;
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton button[data-testid="stButtonPrimary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* 입력 필드 스타일 개선 */
+    .stTextInput label {
+        color: #000000 !important; /* 라벨 텍스트 색상 검정색으로 변경 */
+        font-weight: 500 !important;
+    }
+    
+    .stTextInput input {
+        background-color: #ffffff !important; /* 입력 필드 배경색 흰색으로 설정 */
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1.1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stTextInput input:focus {
+        box-shadow: 0 0 0 2px var(--primary-light) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* 테이블 헤더 */
+    .deduction-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .deduction-table th {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+    
+    .deduction-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+        background-color: var(--background);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .deduction-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .deduction-table td:first-child {
+        background-color: var(--background-light);
+        font-weight: 500;
+        color: var(--text-primary);
+        width: 40%;
+    }
+    
+    .deduction-table td:nth-child(2) {
+        text-align: right;
+        width: 35%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+    
+    .deduction-table td:nth-child(3) {
+        text-align: right;
+        width: 25%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .deduction-table th:nth-child(2),
+    .deduction-table th:nth-child(3) {
+        text-align: right;
+    }
+
+    /* 테이블 내용 정렬을 위한 추가 스타일 제거 */
+    .deduction-analysis-table tr {
+        display: table-row;
+    }
+    
+    .deduction-analysis-table th,
+    .deduction-analysis-table td {
+        display: table-cell;
+    }
+
+    /* 입력 스타일 개선 */
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--background);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container input {
+        flex: 1;
+        border: none !important;
+        padding: 1rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: right !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: var(--primary-dark) !important;
+    }
+    
+    .input-container button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border: none !important;
+        padding: 1rem 1.5rem !important;
+        font-weight: 600 !important;
+        min-width: 100px !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .input-container button:hover {
+        background-color: var(--primary-dark) !important;
+    }
+
+    /* 금액 단위 강조 */
+    .currency-unit {
+        font-weight: 600;
+        color: var(--primary);
+        padding-left: 0.5rem;
+    }
+
+    /* 계산 버튼 스타일 */
+    .calculate-button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 2rem !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .calculate-button:hover {
+        background-color: var(--primary-dark) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* 결과 섹션 스타일 */
+    .results-container {
+        background-color: var(--background-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 1px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .results-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid var(--primary);
+    }
+    
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .result-label {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+    }
+    
+    .result-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        text-align: right;
+    }
+    
+    .result-highlight {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    /* 계산 버튼 스타일 추가 - 버튼 클릭 이벤트 밖으로 이동 */
+    .stButton button[data-testid="stButtonPrimary"] {
+        height: 3.5rem !important;
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton button[data-testid="stButtonPrimary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* 입력 필드 스타일 개선 */
+    .stTextInput label {
+        color: #000000 !important; /* 라벨 텍스트 색상 검정색으로 변경 */
+        font-weight: 500 !important;
+    }
+    
+    .stTextInput input {
+        background-color: #ffffff !important; /* 입력 필드 배경색 흰색으로 설정 */
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1.1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stTextInput input:focus {
+        box-shadow: 0 0 0 2px var(--primary-light) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* 테이블 헤더 */
+    .deduction-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .deduction-table th {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+    
+    .deduction-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+        background-color: var(--background);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .deduction-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .deduction-table td:first-child {
+        background-color: var(--background-light);
+        font-weight: 500;
+        color: var(--text-primary);
+        width: 40%;
+    }
+    
+    .deduction-table td:nth-child(2) {
+        text-align: right;
+        width: 35%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+    
+    .deduction-table td:nth-child(3) {
+        text-align: right;
+        width: 25%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .deduction-table th:nth-child(2),
+    .deduction-table th:nth-child(3) {
+        text-align: right;
+    }
+
+    /* 테이블 내용 정렬을 위한 추가 스타일 제거 */
+    .deduction-analysis-table tr {
+        display: table-row;
+    }
+    
+    .deduction-analysis-table th,
+    .deduction-analysis-table td {
+        display: table-cell;
+    }
+
+    /* 입력 스타일 개선 */
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--background);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container input {
+        flex: 1;
+        border: none !important;
+        padding: 1rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: right !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: var(--primary-dark) !important;
+    }
+    
+    .input-container button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border: none !important;
+        padding: 1rem 1.5rem !important;
+        font-weight: 600 !important;
+        min-width: 100px !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .input-container button:hover {
+        background-color: var(--primary-dark) !important;
+    }
+
+    /* 금액 단위 강조 */
+    .currency-unit {
+        font-weight: 600;
+        color: var(--primary);
+        padding-left: 0.5rem;
+    }
+
+    /* 계산 버튼 스타일 */
+    .calculate-button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 2rem !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .calculate-button:hover {
+        background-color: var(--primary-dark) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* 결과 섹션 스타일 */
+    .results-container {
+        background-color: var(--background-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 1px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .results-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid var(--primary);
+    }
+    
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .result-label {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+    }
+    
+    .result-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        text-align: right;
+    }
+    
+    .result-highlight {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    /* 계산 버튼 스타일 추가 - 버튼 클릭 이벤트 밖으로 이동 */
+    .stButton button[data-testid="stButtonPrimary"] {
+        height: 3.5rem !important;
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton button[data-testid="stButtonPrimary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* 입력 필드 스타일 개선 */
+    .stTextInput label {
+        color: #000000 !important; /* 라벨 텍스트 색상 검정색으로 변경 */
+        font-weight: 500 !important;
+    }
+    
+    .stTextInput input {
+        background-color: #ffffff !important; /* 입력 필드 배경색 흰색으로 설정 */
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1.1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stTextInput input:focus {
+        box-shadow: 0 0 0 2px var(--primary-light) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* 테이블 헤더 */
+    .deduction-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .deduction-table th {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+    
+    .deduction-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+        background-color: var(--background);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .deduction-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .deduction-table td:first-child {
+        background-color: var(--background-light);
+        font-weight: 500;
+        color: var(--text-primary);
+        width: 40%;
+    }
+    
+    .deduction-table td:nth-child(2) {
+        text-align: right;
+        width: 35%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+    
+    .deduction-table td:nth-child(3) {
+        text-align: right;
+        width: 25%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .deduction-table th:nth-child(2),
+    .deduction-table th:nth-child(3) {
+        text-align: right;
+    }
+
+    /* 테이블 내용 정렬을 위한 추가 스타일 제거 */
+    .deduction-analysis-table tr {
+        display: table-row;
+    }
+    
+    .deduction-analysis-table th,
+    .deduction-analysis-table td {
+        display: table-cell;
+    }
+
+    /* 입력 스타일 개선 */
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--background);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container input {
+        flex: 1;
+        border: none !important;
+        padding: 1rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: right !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: var(--primary-dark) !important;
+    }
+    
+    .input-container button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border: none !important;
+        padding: 1rem 1.5rem !important;
+        font-weight: 600 !important;
+        min-width: 100px !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .input-container button:hover {
+        background-color: var(--primary-dark) !important;
+    }
+
+    /* 금액 단위 강조 */
+    .currency-unit {
+        font-weight: 600;
+        color: var(--primary);
+        padding-left: 0.5rem;
+    }
+
+    /* 계산 버튼 스타일 */
+    .calculate-button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 2rem !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .calculate-button:hover {
+        background-color: var(--primary-dark) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* 결과 섹션 스타일 */
+    .results-container {
+        background-color: var(--background-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 1px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .results-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid var(--primary);
+    }
+    
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .result-label {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+    }
+    
+    .result-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        text-align: right;
+    }
+    
+    .result-highlight {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    /* 계산 버튼 스타일 추가 - 버튼 클릭 이벤트 밖으로 이동 */
+    .stButton button[data-testid="stButtonPrimary"] {
+        height: 3.5rem !important;
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton button[data-testid="stButtonPrimary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* 입력 필드 스타일 개선 */
+    .stTextInput label {
+        color: #000000 !important; /* 라벨 텍스트 색상 검정색으로 변경 */
+        font-weight: 500 !important;
+    }
+    
+    .stTextInput input {
+        background-color: #ffffff !important; /* 입력 필드 배경색 흰색으로 설정 */
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1.1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stTextInput input:focus {
+        box-shadow: 0 0 0 2px var(--primary-light) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* 테이블 헤더 */
+    .deduction-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .deduction-table th {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+    
+    .deduction-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+        background-color: var(--background);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .deduction-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .deduction-table td:first-child {
+        background-color: var(--background-light);
+        font-weight: 500;
+        color: var(--text-primary);
+        width: 40%;
+    }
+    
+    .deduction-table td:nth-child(2) {
+        text-align: right;
+        width: 35%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+    
+    .deduction-table td:nth-child(3) {
+        text-align: right;
+        width: 25%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .deduction-table th:nth-child(2),
+    .deduction-table th:nth-child(3) {
+        text-align: right;
+    }
+
+    /* 테이블 내용 정렬을 위한 추가 스타일 제거 */
+    .deduction-analysis-table tr {
+        display: table-row;
+    }
+    
+    .deduction-analysis-table th,
+    .deduction-analysis-table td {
+        display: table-cell;
+    }
+
+    /* 입력 스타일 개선 */
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--background);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container input {
+        flex: 1;
+        border: none !important;
+        padding: 1rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: right !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: var(--primary-dark) !important;
+    }
+    
+    .input-container button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border: none !important;
+        padding: 1rem 1.5rem !important;
+        font-weight: 600 !important;
+        min-width: 100px !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .input-container button:hover {
+        background-color: var(--primary-dark) !important;
+    }
+
+    /* 금액 단위 강조 */
+    .currency-unit {
+        font-weight: 600;
+        color: var(--primary);
+        padding-left: 0.5rem;
+    }
+
+    /* 계산 버튼 스타일 */
+    .calculate-button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 2rem !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .calculate-button:hover {
+        background-color: var(--primary-dark) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* 결과 섹션 스타일 */
+    .results-container {
+        background-color: var(--background-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 1px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .results-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid var(--primary);
+    }
+    
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .result-label {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+    }
+    
+    .result-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        text-align: right;
+    }
+    
+    .result-highlight {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    /* 계산 버튼 스타일 추가 - 버튼 클릭 이벤트 밖으로 이동 */
+    .stButton button[data-testid="stButtonPrimary"] {
+        height: 3.5rem !important;
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton button[data-testid="stButtonPrimary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* 입력 필드 스타일 개선 */
+    .stTextInput label {
+        color: #000000 !important; /* 라벨 텍스트 색상 검정색으로 변경 */
+        font-weight: 500 !important;
+    }
+    
+    .stTextInput input {
+        background-color: #ffffff !important; /* 입력 필드 배경색 흰색으로 설정 */
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1.1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stTextInput input:focus {
+        box-shadow: 0 0 0 2px var(--primary-light) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* 테이블 헤더 */
+    .deduction-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .deduction-table th {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+    
+    .deduction-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+        background-color: var(--background);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .deduction-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .deduction-table td:first-child {
+        background-color: var(--background-light);
+        font-weight: 500;
+        color: var(--text-primary);
+        width: 40%;
+    }
+    
+    .deduction-table td:nth-child(2) {
+        text-align: right;
+        width: 35%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+    
+    .deduction-table td:nth-child(3) {
+        text-align: right;
+        width: 25%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .deduction-table th:nth-child(2),
+    .deduction-table th:nth-child(3) {
+        text-align: right;
+    }
+
+    /* 테이블 내용 정렬을 위한 추가 스타일 제거 */
+    .deduction-analysis-table tr {
+        display: table-row;
+    }
+    
+    .deduction-analysis-table th,
+    .deduction-analysis-table td {
+        display: table-cell;
+    }
+
+    /* 입력 스타일 개선 */
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--background);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container input {
+        flex: 1;
+        border: none !important;
+        padding: 1rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: right !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: var(--primary-dark) !important;
+    }
+    
+    .input-container button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border: none !important;
+        padding: 1rem 1.5rem !important;
+        font-weight: 600 !important;
+        min-width: 100px !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .input-container button:hover {
+        background-color: var(--primary-dark) !important;
+    }
+
+    /* 금액 단위 강조 */
+    .currency-unit {
+        font-weight: 600;
+        color: var(--primary);
+        padding-left: 0.5rem;
+    }
+
+    /* 계산 버튼 스타일 */
+    .calculate-button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 2rem !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .calculate-button:hover {
+        background-color: var(--primary-dark) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* 결과 섹션 스타일 */
+    .results-container {
+        background-color: var(--background-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 1px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .results-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid var(--primary);
+    }
+    
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .result-label {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+    }
+    
+    .result-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        text-align: right;
+    }
+    
+    .result-highlight {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    /* 계산 버튼 스타일 추가 - 버튼 클릭 이벤트 밖으로 이동 */
+    .stButton button[data-testid="stButtonPrimary"] {
+        height: 3.5rem !important;
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton button[data-testid="stButtonPrimary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* 입력 필드 스타일 개선 */
+    .stTextInput label {
+        color: #000000 !important; /* 라벨 텍스트 색상 검정색으로 변경 */
+        font-weight: 500 !important;
+    }
+    
+    .stTextInput input {
+        background-color: #ffffff !important; /* 입력 필드 배경색 흰색으로 설정 */
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1.1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stTextInput input:focus {
+        box-shadow: 0 0 0 2px var(--primary-light) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* 테이블 헤더 */
+    .deduction-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .deduction-table th {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+    
+    .deduction-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+        background-color: var(--background);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .deduction-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .deduction-table td:first-child {
+        background-color: var(--background-light);
+        font-weight: 500;
+        color: var(--text-primary);
+        width: 40%;
+    }
+    
+    .deduction-table td:nth-child(2) {
+        text-align: right;
+        width: 35%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+    
+    .deduction-table td:nth-child(3) {
+        text-align: right;
+        width: 25%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .deduction-table th:nth-child(2),
+    .deduction-table th:nth-child(3) {
+        text-align: right;
+    }
+
+    /* 테이블 내용 정렬을 위한 추가 스타일 제거 */
+    .deduction-analysis-table tr {
+        display: table-row;
+    }
+    
+    .deduction-analysis-table th,
+    .deduction-analysis-table td {
+        display: table-cell;
+    }
+
+    /* 입력 스타일 개선 */
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--background);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container input {
+        flex: 1;
+        border: none !important;
+        padding: 1rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: right !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: var(--primary-dark) !important;
+    }
+    
+    .input-container button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border: none !important;
+        padding: 1rem 1.5rem !important;
+        font-weight: 600 !important;
+        min-width: 100px !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .input-container button:hover {
+        background-color: var(--primary-dark) !important;
+    }
+
+    /* 금액 단위 강조 */
+    .currency-unit {
+        font-weight: 600;
+        color: var(--primary);
+        padding-left: 0.5rem;
+    }
+
+    /* 계산 버튼 스타일 */
+    .calculate-button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 2rem !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .calculate-button:hover {
+        background-color: var(--primary-dark) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* 결과 섹션 스타일 */
+    .results-container {
+        background-color: var(--background-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 1px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .results-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid var(--primary);
+    }
+    
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .result-label {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+    }
+    
+    .result-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        text-align: right;
+    }
+    
+    .result-highlight {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    /* 계산 버튼 스타일 추가 - 버튼 클릭 이벤트 밖으로 이동 */
+    .stButton button[data-testid="stButtonPrimary"] {
+        height: 3.5rem !important;
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton button[data-testid="stButtonPrimary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* 입력 필드 스타일 개선 */
+    .stTextInput label {
+        color: #000000 !important; /* 라벨 텍스트 색상 검정색으로 변경 */
+        font-weight: 500 !important;
+    }
+    
+    .stTextInput input {
+        background-color: #ffffff !important; /* 입력 필드 배경색 흰색으로 설정 */
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1.1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stTextInput input:focus {
+        box-shadow: 0 0 0 2px var(--primary-light) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* 테이블 헤더 */
+    .deduction-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .deduction-table th {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+    
+    .deduction-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+        background-color: var(--background);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .deduction-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .deduction-table td:first-child {
+        background-color: var(--background-light);
+        font-weight: 500;
+        color: var(--text-primary);
+        width: 40%;
+    }
+    
+    .deduction-table td:nth-child(2) {
+        text-align: right;
+        width: 35%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+    
+    .deduction-table td:nth-child(3) {
+        text-align: right;
+        width: 25%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .deduction-table th:nth-child(2),
+    .deduction-table th:nth-child(3) {
+        text-align: right;
+    }
+
+    /* 테이블 내용 정렬을 위한 추가 스타일 제거 */
+    .deduction-analysis-table tr {
+        display: table-row;
+    }
+    
+    .deduction-analysis-table th,
+    .deduction-analysis-table td {
+        display: table-cell;
+    }
+
+    /* 입력 스타일 개선 */
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--background);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container input {
+        flex: 1;
+        border: none !important;
+        padding: 1rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: right !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: var(--primary-dark) !important;
+    }
+    
+    .input-container button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border: none !important;
+        padding: 1rem 1.5rem !important;
+        font-weight: 600 !important;
+        min-width: 100px !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .input-container button:hover {
+        background-color: var(--primary-dark) !important;
+    }
+
+    /* 금액 단위 강조 */
+    .currency-unit {
+        font-weight: 600;
+        color: var(--primary);
+        padding-left: 0.5rem;
+    }
+
+    /* 계산 버튼 스타일 */
+    .calculate-button {
+        background-color: var(--primary) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 2rem !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .calculate-button:hover {
+        background-color: var(--primary-dark) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* 결과 섹션 스타일 */
+    .results-container {
+        background-color: var(--background-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 1px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .results-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid var(--primary);
+    }
+    
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .result-label {
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+    }
+    
+    .result-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        text-align: right;
+    }
+    
+    .result-highlight {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    /* 계산 버튼 스타일 추가 - 버튼 클릭 이벤트 밖으로 이동 */
+    .stButton button[data-testid="stButtonPrimary"] {
+        height: 3.5rem !important;
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton button[data-testid="stButtonPrimary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* 입력 필드 스타일 개선 */
+    .stTextInput label {
+        color: #000000 !important; /* 라벨 텍스트 색상 검정색으로 변경 */
+        font-weight: 500 !important;
+    }
+    
+    .stTextInput input {
+        background-color: #ffffff !important; /* 입력 필드 배경색 흰색으로 설정 */
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1.1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stTextInput input:focus {
+        box-shadow: 0 0 0 2px var(--primary-light) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* 테이블 헤더 */
+    .deduction-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .deduction-table th {
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+    
+    .deduction-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+        background-color: var(--background);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .deduction-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .deduction-table td:first-child {
+        background-color: var(--background-light);
+        font-weight: 500;
+        color: var(--text-primary);
+        width: 40%;
+    }
+    
+    .deduction-table td:nth-child(2) {
+        text-align: right;
+        width: 35%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+    
+    .deduction-table td:nth-child(3) {
+        text-align: right;
+        width: 25%;
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .deduction-table th:nth-child(2),
+    .deduction-table th:nth-child(3) {
+        text-align: right;
+    }
+
+    /* 테이블 내용 정렬을 위한 추가 스타일 제거 */
+    .deduction-analysis-table tr {
+        display: table-row;
+    }
+    
+    .deduction-analysis-table th,
+    .deduction-analysis-table td {
+        display: table-cell;
+    }
+
+    /* 입력 스타일 개선 */
+    .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--background);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container input {
 </style>
 """, unsafe_allow_html=True)
 
